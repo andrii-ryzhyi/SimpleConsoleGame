@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Game.Common;
 using Game.Exceptions;
 using Game.GameObjects;
 using Game.Weapons;
 
 namespace Game.Main
 {
+    [Serializable]
     public class BaseGame
     {
         public Character Character1 { get; set; }
@@ -55,6 +56,8 @@ namespace Game.Main
             Character1 = InitPlayer(0, true);
             Character2 = InitPlayer(1, false);
             World = InitWorld();
+            SaveGame.Save("save.json", this);
+            SaveGame.Load("save.json", this);
             while (Character1.Alive && !World.HasWinner())
             {
                 try

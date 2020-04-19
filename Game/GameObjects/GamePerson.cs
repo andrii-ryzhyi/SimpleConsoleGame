@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Game.GameObjects;
+using Newtonsoft.Json;
 
 namespace Game
 {
@@ -28,6 +29,7 @@ namespace Game
         public int Level { get; set; }
         public int Damage { get; set; }
         public bool Alive { get; set; } = true;
+        [JsonIgnore]
         public Map World { get; set; }
         public IWeapon Weapon { get; set; }
 

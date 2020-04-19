@@ -6,8 +6,8 @@ namespace Game
 {
     public interface IWeapon
     {
-        public bool Taken { get; set; }
-        public int Damage { get; set; }
-        public void SpecialAttack(GamePerson enemy);
+        bool Taken { get; set; }
+        int Damage { get; set; }
+        void SpecialAttack(GamePerson enemy);
     }
 }
