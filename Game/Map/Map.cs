@@ -18,11 +18,13 @@ namespace Game
     [Serializable]
     public class Map
     {
-        public int WorldHeight { get; }
-        public int WorldWidth { get; }
-        public Cell[,] Cells { get; }
-        public Season Season { get; }
-
+        public int WorldHeight { get; set; }
+        public int WorldWidth { get; set; }
+        public Cell[,] Cells { get; set; }
+        public Season Season { get; set; }
+        public Map()
+        {
+        }
         public Map(int height, int width, Season season)
         {
             Cells = new Cell[height, width];
@@ -83,7 +85,8 @@ namespace Game
             {
                 for (int k = 0; k < WorldWidth; k++)
                 {
-                    if (Cells[i, k].GameObject == person)
+                    if (Cells[i, k].GameObject is GamePerson origin &&
+                        origin.Name.Equals(person.Name))
                         return new Position(i, k);
                 }
             }

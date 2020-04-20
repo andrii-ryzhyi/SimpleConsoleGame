@@ -31,6 +31,7 @@ namespace Game
         public bool Alive { get; set; } = true;
         [JsonIgnore]
         public Map World { get; set; }
+
         public IWeapon Weapon { get; set; }
 
         public GamePerson()

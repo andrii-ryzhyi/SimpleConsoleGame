@@ -57,7 +57,8 @@ namespace Game.Main
             Character2 = InitPlayer(1, false);
             World = InitWorld();
             SaveGame.Save("save.json", this);
-            SaveGame.Load("save.json", this);
+            SaveGame.RestoreGame("save.json", this);
+            //var otherMap = SaveGame.Load<Map>("save.json");
             while (Character1.Alive && !World.HasWinner())
             {
                 try
