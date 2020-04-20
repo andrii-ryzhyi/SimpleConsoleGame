@@ -1,5 +1,5 @@
 ﻿using System;
-
+using Game.Common;
 using Game.Main;
 
 namespace Game
@@ -12,7 +12,16 @@ namespace Game
             {
                 Console.OutputEncoding = System.Text.Encoding.Unicode;
                 BaseGame game = new BaseGame(16, 14);
-                game.Start();
+                var opt = SaveGame.Menu();
+                switch(opt)
+                {
+                    case 1:
+                        game.Start();
+                        break;
+                    case 2:
+                        game.Load();
+                        break;
+                }
             }
             catch (Exception ex)
             {

@@ -49,16 +49,29 @@ namespace Game.Main
             world.SetGameObjects(GameObjects.ToArray());
             return world;
         }
+        public void Load()
+        {
+            BaseGame restore = SaveGame.Load<BaseGame>("save.json");
+            Start(restore);
+        }
 
-        public void Start()
+        public void Start(BaseGame restore = null)
         {
             int v = 0;
-            Character1 = InitPlayer(0, true);
-            Character2 = InitPlayer(1, false);
-            World = InitWorld();
-            SaveGame.Save("save.json", this);
-            SaveGame.RestoreGame("save.json", this);
-            //var otherMap = SaveGame.Load<Map>("save.json");
+            if (restore != null)
+            {
+                World = restore.World;
+                Character1 = restore.Character1;
+                Character1.World = restore.World;
+                Character2 = restore.Character2;
+                Character2.World = restore.World;
+            }
+            else
+            {
+                Character1 = InitPlayer(0, true);
+                Character2 = InitPlayer(1, false);
+                World = InitWorld();
+            }
             while (Character1.Alive && !World.HasWinner())
             {
                 try
@@ -83,6 +96,7 @@ namespace Game.Main
                         var a = 5 / v;
                         throw new GameException("Buy this game to continue");
                     }
+                    SaveGame.Save("save.json", this);
                 }
                 catch (GameException ex)
                 {

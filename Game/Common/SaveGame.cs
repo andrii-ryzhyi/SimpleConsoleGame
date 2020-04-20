@@ -16,6 +16,7 @@ namespace Game.Common
                 byte[] data = jsonData
                     .Select(x => (byte)x)
                     .ToArray();
+                fs.SetLength(0);
                 fs.Write(data, 0, data.Length);
             }
         }
@@ -25,20 +26,28 @@ namespace Game.Common
             using (var streamReader = new StreamReader($"{path}.json"))
             {
                 string jsonData = streamReader.ReadToEnd();
-                //restore = JsonConvert.DeserializeObject<BaseGame>(dataStr);
                 var restore = JsonConvert.DeserializeObject<T>(jsonData, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects });
                 return restore;             
             }
         }        
 
-        public static void RestoreGame(string path, BaseGame originGame)
+        public static int Menu()
         {
-            var restore = Load<BaseGame>(path);
-            originGame.World = restore.World;
-            originGame.Character1 = restore.Character1;
-            originGame.Character1.World = restore.World;
-            originGame.Character2 = restore.Character2;
-            originGame.Character2.World = restore.World;
+            Console.WriteLine("1. New Game\n2. Continue\n3. Quit");
+            Console.Write("Chose option: ");
+            string opt = Console.ReadKey().KeyChar.ToString();
+            Console.ReadLine();
+            Console.WriteLine();
+            switch (opt)
+            {
+                case "1":
+                    return 1;
+                case "2":
+                    return 2;
+                default:
+                    System.Environment.Exit(0);
+                    return 0;
+            }
         }
     }
 }
