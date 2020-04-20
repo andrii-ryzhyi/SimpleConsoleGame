@@ -5,6 +5,9 @@ namespace Game.GameObjects
     [Serializable]
     public class Character : GamePerson
     {
+        public Character()
+        {
+        }
         public Character(string name, bool team) : base(name, team)
         {
         }

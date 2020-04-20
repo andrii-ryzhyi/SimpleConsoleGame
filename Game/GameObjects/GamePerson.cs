@@ -33,6 +33,9 @@ namespace Game
         public Map World { get; set; }
         public IWeapon Weapon { get; set; }
 
+        public GamePerson()
+        {
+        }
         public GamePerson(string name, bool plFriend)
         {
             Name = name;
