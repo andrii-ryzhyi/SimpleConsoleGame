@@ -5,6 +5,7 @@ using Game.GameObjects;
 
 namespace Game
 {
+    [Serializable]
     public class Heart : GameObject
     {
         public bool Used { get; set; } = false;

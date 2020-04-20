@@ -5,6 +5,7 @@ using Game.GameObjects;
 
 namespace Game
 {
+    [Serializable]
     public enum CellState
     {
         HasShip,
@@ -12,6 +13,7 @@ namespace Game
         IsEmpty, 
         IsShooted
     }
+    [Serializable]
     public class Cell
     {
         public GameObject GameObject { get; set; }

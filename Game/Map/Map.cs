@@ -5,6 +5,7 @@ using Game.Weapons;
 
 namespace Game
 {
+    [Serializable]
     public enum Season
     {
         None,
@@ -14,6 +15,7 @@ namespace Game
         Autumn
     }
 
+    [Serializable]
     public class Map
     {
         public int WorldHeight { get; }

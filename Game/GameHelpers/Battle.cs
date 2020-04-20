@@ -2,6 +2,7 @@
 
 namespace Game
 {
+    [Serializable]
     public class Battle
     {
         public GamePerson Character { get; set; }

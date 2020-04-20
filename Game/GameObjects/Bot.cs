@@ -2,6 +2,7 @@
 
 namespace Game.GameObjects
 {
+    [Serializable]
     public class Bot : GamePerson
     {
         public Bot(string name, bool plFriend) : base(name, plFriend)

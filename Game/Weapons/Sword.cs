@@ -2,6 +2,7 @@
 
 namespace Game.Weapons
 {
+    [Serializable]
     public class Sword : CommonWeapon
     {
         public Sword()
