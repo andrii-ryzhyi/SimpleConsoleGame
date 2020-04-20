@@ -12,8 +12,8 @@ namespace Game.Common
         {
             using (var fs = new FileStream($"{path}.json", FileMode.OpenOrCreate))
             {
-                string strObj = JsonConvert.SerializeObject(game);
-                byte[] data = strObj
+                string jsonData = JsonConvert.SerializeObject(game, Formatting.Indented, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects, TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple });
+                byte[] data = jsonData
                     .Select(x => (byte)x)
                     .ToArray();
                 fs.Write(data, 0, data.Length);
@@ -22,19 +22,17 @@ namespace Game.Common
 
         public static void Load(string path, BaseGame originGame)
         {
-            BaseGame restore = null;
-
             using (var streamReader = new StreamReader($"{path}.json"))
             {
-                string dataStr = streamReader.ReadToEnd();
-                restore = JsonConvert.DeserializeObject<BaseGame>(dataStr);
+                string jsonData = streamReader.ReadToEnd();
+                //restore = JsonConvert.DeserializeObject<BaseGame>(dataStr);
+                var restore = JsonConvert.DeserializeObject<BaseGame>(jsonData, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects });
+                originGame.World = restore.World;
+                originGame.Character1 = restore.Character1;
+                originGame.Character1.World = restore.World;
+                originGame.Character2 = restore.Character2;
+                originGame.Character2.World = restore.World;
             }
-            
-            originGame.World = restore.World;
-            originGame.Character1 = restore.Character1;
-            originGame.Character1.World = restore.World;
-            originGame.Character2 = restore.Character2;
-            originGame.Character2.World = restore.World;
-        }
+        }        
     }
 }
