@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Game.Common;
 using Game.Exceptions;
 using Game.GameObjects;
@@ -49,13 +50,13 @@ namespace Game.Main
             world.SetGameObjects(GameObjects.ToArray());
             return world;
         }
-        public void Load()
+        public async Task Load()
         {
             BaseGame restore = SaveGame.Load<BaseGame>("save.json");
-            Start(restore);
+            await Start(restore);
         }
 
-        public void Start(BaseGame restore = null)
+        public async Task Start(BaseGame restore = null)
         {
             int v = 0;
             if (restore != null)
@@ -82,10 +83,14 @@ namespace Game.Main
                     Console.WriteLine("Tap <Enter> to finish move...");
                     Console.ReadLine();
                     World.Show(Character1, Character2, Turn, false);
+                    Task asyncSavePoint1 = SaveGame.AutoSaveAsync(this);
+                    Console.WriteLine("Game autosave kicked off");
                     Character2.Moving();
                     Console.WriteLine("Tap <Enter> to finish move...");
                     Console.ReadLine();
                     World.Show(Character1, Character2, Turn);
+                    await asyncSavePoint1;
+                    Task asyncSavePoint2 = SaveGame.AutoSaveAsync(this);
                     foreach (Bot item in GameObjects.Where(x => x is Bot b && b.Alive))
                     {
                         item.Move("");
@@ -96,7 +101,9 @@ namespace Game.Main
                         var a = 5 / v;
                         throw new GameException("Buy this game to continue");
                     }
-                    SaveGame.Save("save.json", this);
+                    await asyncSavePoint2;
+
+
                 }
                 catch (GameException ex)
                 {

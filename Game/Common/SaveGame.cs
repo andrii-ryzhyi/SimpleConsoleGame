@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Game.Common
 {
@@ -18,6 +19,20 @@ namespace Game.Common
                     .ToArray();
                 fs.SetLength(0);
                 fs.Write(data, 0, data.Length);
+            }
+        }
+
+        public static async Task AutoSaveAsync(BaseGame game)
+        {
+            string jsonData = JsonConvert.SerializeObject(game, Formatting.Indented, settings: new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects, TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple });
+            byte[] data = jsonData
+                .Select(x => (byte)x)
+                .ToArray();
+            using (var asyncfs = new FileStream("autosave.sav", FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write, 4096, true))
+            {
+                //await largeJson.WriteToAsync(new JsonTextWriter(new StreamWriter(asyncFileStream)));
+                await asyncfs.WriteAsync(data, 0, data.Length);
+                Console.WriteLine("AutoSave method end");
             }
         }
 
