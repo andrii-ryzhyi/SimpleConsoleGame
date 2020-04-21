@@ -9,16 +9,16 @@ namespace Game.Common
 {
     public static class SaveGame
     {
-        public static void Save<T>(string path, T obj)
+        public static async Task Save<T>(string path, T obj)
         {
-            using (var fs = new FileStream($"{path}.json", FileMode.OpenOrCreate))
+            using (var asyncfs = new FileStream($"{path}.json", FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write, 4096, true))
             {
                 string jsonData = JsonConvert.SerializeObject(obj, Formatting.Indented, settings: new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects, TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple });
                 byte[] data = jsonData
                     .Select(x => (byte)x)
                     .ToArray();
-                fs.SetLength(0);
-                fs.Write(data, 0, data.Length);
+                asyncfs.SetLength(0);
+                await asyncfs.WriteAsync(data, 0, data.Length);
             }
         }
 
@@ -36,33 +36,21 @@ namespace Game.Common
             }
         }
 
-        public static T Load<T>(string path)
+        public static async Task<T> Load<T>(string path)
         {
             using (var streamReader = new StreamReader($"{path}.json"))
             {
-                string jsonData = streamReader.ReadToEnd();
+                string jsonData = await streamReader.ReadToEndAsync();
                 var restore = JsonConvert.DeserializeObject<T>(jsonData, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects });
                 return restore;             
             }
         }        
 
-        public static int Menu()
+        public static string Menu()
         {
             Console.WriteLine("1. New Game\n2. Continue\n3. Quit");
             Console.Write("Chose option: ");
-            string opt = Console.ReadKey().KeyChar.ToString();
-            Console.ReadLine();
-            Console.WriteLine();
-            switch (opt)
-            {
-                case "1":
-                    return 1;
-                case "2":
-                    return 2;
-                default:
-                    System.Environment.Exit(0);
-                    return 0;
-            }
+            return Console.ReadKey().KeyChar.ToString();               
         }
     }
 }

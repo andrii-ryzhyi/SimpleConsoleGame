@@ -50,13 +50,13 @@ namespace Game.Main
             world.SetGameObjects(GameObjects.ToArray());
             return world;
         }
-        public async Task Load()
+        public async Task LoadAsync()
         {
-            BaseGame restore = SaveGame.Load<BaseGame>("save.json");
-            await Start(restore);
+            BaseGame restore = await SaveGame.Load<BaseGame>("save.json");
+            await StartAsync(restore);
         }
 
-        public async Task Start(BaseGame restore = null)
+        public async Task StartAsync(BaseGame restore = null)
         {
             int v = 0;
             if (restore != null)
